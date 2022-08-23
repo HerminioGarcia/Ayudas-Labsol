@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Lista de apoyos
+{% endblock titulo %}
+
+{% block contenido %}
+    <h1>Lista de convocatorias</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Apoyo</th>
+                <th>Presupuesto</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for convocatoria in  object_list  %}
+                <tr>
+                    <td>{{convocatoria.nombre}}</td>
+                    <td>
+                        {% if convocatoria.decripcion %}
+                            {{convocatoria.decripcion}}    
+                        {% else %}
+                            No cuenta con descripción
+                        {% endif %}
+                    </td>
+                    <td>{{convocatoria.apoyo}}</td>
+                    <td>{{convocatoria.presupuesto.nombre}}</td>
+                    <td>
+                        
+                        <a class="btn btn-outline-primary btn-sm" href="{% url 'editar_convocatoria' convocatoria.id %}">Editar</a>
+                        <a class="btn btn-outline-warning btn-sm" href="{% url 'eliminar_convocatoria' convocatoria.id %}">Eliminar</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">
+                        <p>No existe convocatoria registrada</p>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock contenido %}

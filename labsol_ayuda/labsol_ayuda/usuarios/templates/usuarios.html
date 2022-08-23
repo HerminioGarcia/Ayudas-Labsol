@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}
+    Lista de usuarios
+{% endblock titulo %}
+{% block contenido %}
+  <h1>Lista de usuarios</h1>
+    <table width="100%">
+        <thead>
+            <th>Nombre</th>
+            <th>Teléfono Celular</th>
+            <th>Institución</th>
+            <th>Tipo de apoyo</th>
+            <th>Opciones</th>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+                <tr>
+                    <td>{{usuario.user_name}}</td>
+                    <td>{{usuario.telefono}}</td>
+                    <td>{{usuario.instituto}}</td>
+                    <td>{{usuario.apoyo}}</td>
+                    <td>
+                        <a href="{% url 'eliminar_usuarios' usuarios.id %}">Eliminar</a>
+                        
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5"> <p>No hay usuarios registrados</p> </td>
+                </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+{% endblock contenido %}
+
+{% block scripts %}
+    {% comment %}<script src="{% static 'dist/js/pages/dashboard3.js' %}"></script>{% endcomment %} 
+{% endblock scripts %}

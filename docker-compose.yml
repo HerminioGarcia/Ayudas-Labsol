@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: cursoLabsol
+    #restart: always
+    depends_on:
+      - db-labsol_ayuda
+    ports:
+      - 8000:8000
+    volumes: 
+      - ./labsol_ayuda/:/app
+
+  db-labsol_ayuda:
+    image: mariadb
+    container_name: labsol_ayuda-db
+    #restart: always
+    environment:
+      MYSQL_DATABASE: labsol_ayuda
+      MYSQL_USER: labsol_ayuda_user
+      MYSQL_PASSWORD: "asjdghj"
+      MYSQL_ROOT_PASSWORD: admin1234
+    volumes:
+      - db-labsol_ayuda:/var/lib/mysql
+    ports:
+      - 3320:3306
+
+volumes:
+  db:    
+  db-labsol_ayuda:    

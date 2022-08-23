@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block titulo %}
+    Lista de usuarios
+{% endblock titulo %}
+
+{% block contenido %}
+    <h1>Lista de usuarios</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger">
+                    {{message}}
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    {{message}}
+                </div>
+            {% endif %}        
+        {% endfor %}
+    {% endif %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Correo</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>CURP</th>
+                <th>Telefono</th>
+                <th>Instituto</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in object_list  %}
+                <tr>
+                    <td>{{usuario.email}}</td>
+                    <td>{{usuario.first_name}}</td>
+                    <td>{{usuario.last_name}}</td>
+                    <td>{{usuario.curp}}</td>
+                    <td>{{usuario.datos.telefono}}</td>
+                    <td>{{usuario.datos.instituto}}</td>
+                    <td>
+                        <a class="btn btn-outline-primary btn-sm" href="">Editar</a>
+                        <button type="button" 
+                            onclick="asignaUsuario('{{usuario.id}}', '{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}')"
+                            class="btn btn-success" 
+                            data-usuario="{{usuario.id}}" 
+                            data-grupos="{% for g in usuario.groups.all %}{{g.id}}-{% endfor %}" 
+                            data-toggle="modal" 
+                            data-target="#modal-grupos">
+                            Grupos
+                        </button>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <p>No existen usuarios registrados</p>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+<div class="modal fade" id="modal-grupos">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Asignar grupos</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form id="formGrupos" action="{% url 'asignar_grupos_usuario' %}" method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+                {% for grupo in grupos %}
+                    <p>
+                        <input type="checkbox" name="{{grupo.id}}"> {{grupo.name}}
+                    </p>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="usuario" id="idUsuario">
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Asignar grupos</button>
+            </div>
+        </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+
+{% endblock contenido %}
+
+{% block scripts %}
+    <script src="{% static 'dist/js/funciones.js' %}"></script>
+{% endblock scripts %}
