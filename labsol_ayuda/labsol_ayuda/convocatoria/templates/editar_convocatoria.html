@@ -1,12 +1,25 @@
 {% extends 'base.html' %}
 
 {% block titulo %}
-Modificar convocatoria
+Modificar Convocatoria
 {% endblock titulo %}
 
 
 {% block contenido %}
-    <h1>Modificar convocatoria</h1>
+{% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger">
+                     {{message}}
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    {{message}}
+                </div>
+            {% endif %}        
+        {% endfor %}
+    {% endif %}
+    <h1>Modificar Convocatoria</h1>
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}

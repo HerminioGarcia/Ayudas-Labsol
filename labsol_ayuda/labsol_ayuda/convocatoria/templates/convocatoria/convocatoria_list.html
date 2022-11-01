@@ -5,30 +5,47 @@
 {% endblock titulo %}
 
 {% block contenido %}
-    <h1>Lista de convocatorias</h1>
+<p align="right">
+    <a class="fas fa-plus" href="{% url 'nueva_convocatoria'  %}" ></a>
+    <h1>Convocatorias</h1>
+                    <a class="nav-link" data-toggle="dropdown" href="#">                   
+                    <p align="right">
+                        <i class="fas fas fa-cog"></i>
+                        </p>
+                      </a>               
+                      <div class="dropdown-menu dropdown-menu-md-left">
+                        <h3 class="dropdown-item-title">
+                          <a href="{% url 'perfil' %}" class="d-block">nombre</a>
+                        </h3>
+                        <h3 class="dropdown-item-title">
+                          <a class="d-block">fecha</a>
+                        </h3>
+                      </div> 
+                    
     <table class="table">
         <thead>
             <tr>
                 <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Apoyo</th>
-                <th>Presupuesto</th>
+
+                <th>Fecha Inicio</th>
+                
+                <th>Hora Inicio</th>
+                
+                <th>Fecha Cierre</th>
+                
+                <th>Hora Cierre</th>
+
                 <th>Opciones</th>
             </tr>
         </thead>
         <tbody>
             {% for convocatoria in  object_list  %}
                 <tr>
-                    <td>{{convocatoria.nombre}}</td>
-                    <td>
-                        {% if convocatoria.decripcion %}
-                            {{convocatoria.decripcion}}    
-                        {% else %}
-                            No cuenta con descripción
-                        {% endif %}
-                    </td>
-                    <td>{{convocatoria.apoyo}}</td>
-                    <td>{{convocatoria.presupuesto.nombre}}</td>
+                    <td>{{convocatoria.nombre}}</td>               
+                    <td>{{convocatoria.fecha_inicio}}</td>
+                    <td>{{convocatoria.hora_inicio}}</td>
+                    <td>{{convocatoria.fecha_cierre}}</td>
+                    <td>{{convocatoria.hora_cierre}}</td>
                     <td>
                         
                         <a class="btn btn-outline-primary btn-sm" href="{% url 'editar_convocatoria' convocatoria.id %}">Editar</a>
@@ -37,7 +54,7 @@
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                         <p>No existe convocatoria registrada</p>
                     </td>
                 </tr>

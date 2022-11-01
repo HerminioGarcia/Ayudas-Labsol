@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'usuarios',
     'convocatoria',
+    'Formulario',
 ]
 
 MIDDLEWARE = [
@@ -155,3 +156,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'martinezherminio283@gmail.com'
 EMAIL_HOST_PASSWORD = 'itrrnpyuvnozeovx'
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#Es donde se almacenaran los documentos de usuarios
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Lista de Modalidades
+{% endblock titulo %}
+
+{% block contenido %}
+    <h1>Lista de Modalidades</h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger">
+                    {{message}}
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    {{message}}
+                </div>
+            {% endif %}        
+        {% endfor %}
+    {% endif %}
+    <a class="btn btn-success" href="{% url 'nuevoFormulario' %}">Agregar</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for formulario in object_list  %}
+                <tr>
+                    <td>{{formulario.nombre}}</td>
+                    <td>
+                        {% if formulario.descripcion %}
+                            {{formulario.descripcion}}    
+                        {% else %}
+                            No cuenta con descripción
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-success"  href="{% url 'campos_Lista' formulario.id %}">Ver campos</a>
+                        <a class="btn btn-success"  href="{% url 'editarFormulario' formulario.id %}">Editar Modalidad</a>
+                        <a class="btn btn-danger" href="{% url 'eliminar_Formulario' formulario.id %}">Eliminar</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">
+                        <p>No existen modalidades registradas</p>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock contenido %}

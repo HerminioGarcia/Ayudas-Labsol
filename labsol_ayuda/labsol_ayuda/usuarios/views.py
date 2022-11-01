@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from django.contrib.auth.models import User, Group
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.sites.shortcuts import get_current_site
@@ -15,33 +15,43 @@ from django.contrib import messages
 from django.views.generic import ListView, TemplateView
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required,permission_required
-
+from django.core.paginator import Paginator
 from .forms import UserForm, FormDatosPersonales
 from .token import token_activacion
 from .models import DatosPersonales, Municipio
 from django.contrib.auth import get_user_model
+from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+#@login_required
 
-@login_required
-#@permission_required('add_estado')
-def lista_usuarios(request):
-    usuarios = DatosPersonales.objects.all()
-    return render(request, 'usuarios.html', {'usuarios': usuarios})
-
-@login_required
-def eliminar_usuarios(request, id):
-    usuarios = DatosPersonales.objects.get(id=id)
-    usuarios.delete()
-
+def eliminar_usuario(request, id):
+    User = get_user_model()
+    User.objects.get(id=id).delete()
     return redirect('usuarios_lista')
+
+class EliminarUsuarioView(DeleteView):
+    User = get_user_model()
+    model = User
+    success_url = reverse_lazy('usuarios_lista')
+    
+    def form_valid(self, form):
+        User = get_user_model()
+        self.object = self.get_object()
+        self.object.delete()
+        messages.success(self.request, 'Se elimino con éxito el usuario')
+        
+        success_url = self.get_success_url()
+        return HttpResponseRedirect(success_url)  
 
 class LoginView(LoginView):
     template_name='login.html'
     form_class = AuthenticationForm
 
-class ListaUsuariosView(ListView):
+class ListaUsuariosView(LoginRequiredMixin,ListView):
     User = get_user_model()
     model = User
+    paginate_by= 10
     template_name = 'lista_usuarios.html'
 
     def get_context_data(self, **kwargs):
@@ -118,7 +128,7 @@ class ActivarCuentaView(TemplateView):
             
         return redirect('login')
 
-class CrearPerfilView(SuccessMessageMixin,CreateView):
+class CrearPerfilView(LoginRequiredMixin,SuccessMessageMixin,CreateView):
     model=DatosPersonales
     form_class = FormDatosPersonales
     success_url = reverse_lazy('bienvenida')
@@ -130,6 +140,20 @@ class CrearPerfilView(SuccessMessageMixin,CreateView):
         datos_personales.save()
         
         return super().form_valid(form)
+    
+class EditarPerfilView(LoginRequiredMixin,UpdateView):
+    model=DatosPersonales
+    form_class = FormDatosPersonales
+    extra_context = {'accion':'Editar'}
+    success_url = reverse_lazy('bienvenida')
+    success_message = "Datos guardados de manera exitosa"
+
+    def dispatch(self,request,*args,**kwargs):
+        self.object=self.get_object()
+        return super().dispatch(request,*args,**kwargs)
+
+    def get_object(self,queryset=None):
+        return self.request.user.datos
 
 class BienvenidaView(TemplateView):
     template_name = 'bienvenida.html'

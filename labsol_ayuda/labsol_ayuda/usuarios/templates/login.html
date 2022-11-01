@@ -15,12 +15,13 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page"style="background-color:#781005">
 <div class="login-box">
   <!-- /.login-logo -->
-  <div class="card card-outline card-primary">
+  <div class="card card-outline ">
     <div class="card-header text-center">
-      <a href="{% url 'bienvenida' %}" class="h1"><b>AYUDAS LABSOL</b></a>
+      <img src="{% static 'dist/img/LogoBarra2.jpeg' %}" alt="LogoBarra2" class="redimension" width="220" height="80">
+      <a href="{% url 'bienvenida' %}" class="h1"><b>APOYOS LABSOL</b></a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Inicia sesión</p>
@@ -28,10 +29,22 @@
       
       {% if form.errors %}
         <div class="alert alert-warning">
-          Error, verifica tus datos.
+          Su nombre de usuario y contraseña no coinciden. Inténtalo de nuevo.
         </div>
       {% endif %}
 
+      {% if next %}
+        {% if user.is_active %}
+        <div class="alert alert-warning">
+          Tu cuenta no tiene acceso a esta página. Para proceder,
+          inicie sesión con una cuenta que tenga acceso.
+        </div>
+        {% else %}
+        <div class="alert alert-warning">
+          Inicie sesión para ver esta página.</div>
+        {% endif %}
+      {% endif %}
+      
       {% if messages %}
         {% for message in messages %}
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
@@ -65,14 +78,6 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Recuérdame
-              </label>
-            </div>
-          </div>
           <!-- /.col -->
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">Entrar</button>
@@ -83,7 +88,7 @@
       </form>
 
       <p class="mb-1">
-        <a href="forgot-password.html">Olvidé mi contraseña</a>
+        <a href="{% url 'password_reset' %}">Olvidé mi contraseña</a>
       </p>
       <p class="mb-0">
         <a href="{% url 'registrar' %}" class="text-center">Registrarse</a>

@@ -3,8 +3,6 @@ from convocatoria import views, views_presupuesto
 
 
 urlpatterns = [
-    path('', views_presupuesto.BienvenidaView.as_view(), name='bienvenida'),
-    
     path('convocatoria/', views.ListaConvocatoria.as_view(), name='convocatoria_lista'),
     path('convocatoria/nueva', views.nuevo_convocatoria, name='nueva_convocatoria'),
     path('convocatoria/eliminar/<int:id>', views.eliminar_convocatoria, name='eliminar_convocatoria'),

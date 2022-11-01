@@ -2,8 +2,6 @@ from django.db import models
 from usuarios.validadores import  curp_validador,codigoPos_validador,telefono_validador
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-#from django.contrib.auth.models import User
-#from usuarios.models import User
 from django.contrib.auth import get_user_model
 
 GENERO = [
@@ -81,11 +79,11 @@ class User(AbstractBaseUser,PermissionsMixin):
         return self.email
 
 class DatosPersonales(models.Model):
-    user = models.OneToOneField(get_user_model(), verbose_name="Usuario", related_name='datos', on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(get_user_model(), verbose_name="Usuario", related_name='datos', on_delete=models.CASCADE)
     genero = models.CharField('Género', max_length=1, choices=GENERO,default=1,null=False)
-    telefono = models.CharField("Teléfono Celular", max_length=10, validators=[telefono_validador],null=False)
+    telefono = models.CharField("Teléfono Celular", max_length=10, validators=[telefono_validador],unique=True,null=False)
     telefonoP = models.CharField("Teléfono Particular*", max_length=10, validators=[telefono_validador],null=True, blank=True)
-    estado = models.ForeignKey("usuarios.Estado", verbose_name="Estado", on_delete=models.DO_NOTHING,null=False)
+    estado = models.ForeignKey("usuarios.Estado", verbose_name="Estado",default=32, on_delete=models.DO_NOTHING,null=False)
     municipio = models.ForeignKey("usuarios.Municipio", verbose_name="Municipio", on_delete=models.DO_NOTHING,null=False)
     cpostal = models.CharField("Codigo Postal", max_length=5, validators=[codigoPos_validador],unique=False,null=False)
     calle = models.CharField("Calle", max_length=150,null=False)

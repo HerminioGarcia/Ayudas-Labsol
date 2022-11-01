@@ -49,12 +49,19 @@
           <i class="fas fa-th-large"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
-          <h3 class="dropdown-item-title">
-            <a href="{% url 'perfil' %}" class="d-block">Perfil</a>
-          </h3>
+          {% if user.datos.telefono %}
+            <h3 class="dropdown-item-title">
+              <a href="{% url 'perfilEditar' %}" class="d-block">Editar Perfil</a>
+            </h3>   
+          {% else %}
+            <h3 class="dropdown-item-title">
+              <a href="{% url 'perfil' %}" class="d-block">Crear Perfil</a>
+            </h3>
+          {% endif %}
           <h3 class="dropdown-item-title">
             <a href="{% url 'logout' %}" class="d-block">Cerrar sesíon</a>
           </h3>
+
         </div>
       </li>
     </ul>
@@ -92,15 +99,15 @@
             </a>            
           </li>
           <li class="nav-item">
-            <a href="{% url 'presupuesto_lista' %}" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
+            <a href="{% url 'modalidades_lista' %}" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
               <p>
-                Postulaciones
+                Modalidades
               </p>
             </a>            
           </li>
           <li class="nav-item">
-            <a href="{% url 'convocatoria_lista' %}" class="nav-link">
+            <a href="{% url 'presupuesto_lista' %}" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Estadisticas
@@ -135,6 +142,7 @@
       <!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+
   </div>
   <!-- /.content-wrapper -->
 
@@ -143,7 +151,14 @@
     <!-- Control sidebar content goes here -->
   </aside>
   <!-- /.control-sidebar -->
-
+<!-- Main Footer -->
+  <footer class="main-footer">
+    <img src="{% static 'dist/img/GPLv3_Logo.png' %}" alt="GPLv3_Logo" class="redimension" width="85" height="35"> 
+    
+    <div class="float-right d-none d-sm-inline-block">
+      <b><img src="{% static 'dist/img/Logos Labsol 2022_Mesa de trabajo 1.png' %}" alt="Logos Labsol 2022_Mesa de trabajo 1" class="redimension" width="110" height="40"></b>  Version 3.2.1
+    </div>
+  </footer>
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
@@ -162,7 +177,7 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
 {% block scripts %}
-  
+
 {% endblock scripts %}
 {% comment %}<script src="{% static 'dist/js/pages/dashboard3.js' %}"></script>{% endcomment %} 
 </body>

@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-#from django.contrib.auth.models import User
 from .models import User
 from .models import DatosPersonales
 from django.urls import reverse_lazy
@@ -27,7 +26,7 @@ class UserForm(forms.ModelForm):
 class FormDatosPersonales(forms.ModelForm):
     class Meta:
         model=DatosPersonales
-        exclude = ['user']
+        exclude = ['user','apoyo']
         widgets = {
             'estado': forms.Select(attrs={
                 'class':'form-control',

@@ -1,0 +1,45 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block titulo %}
+    Campos
+{% endblock titulo %}
+
+{% block contenido %}
+<body>
+    <h1>Campos de la modalidad {{quiz.formularios}} </h1>
+    
+    <form action="" method="post">
+        {% csrf_token %}
+        {% comment %}
+        {% for campo in quiz.campos.all  %}
+            <p>
+                <label for="id_campo.id">{{campo}}</label>
+                {% if campo.opciones == '1' %}
+                    <select name="{{campo.id}}" id="" {{campo.requerida|requerido}}>
+                        {% for opcion in campo.opciones_campo.all %}
+                            <option value="{{opcion.valor}}">{{opcion.opcion}}</option>
+                        {% endfor %}
+                    </select>
+                {% else %}
+
+                <input name="{{campo.id}}" type="{{campo.tipo_dato|tipo_dato}}" {{campo.requerida|requerido}}>
+                {% endif %}    
+                </p>
+            
+        {% endfor %}
+        {% endcomment %}
+
+        {{form.as_p}}
+            
+        
+        <input type="submit" value="Guardar">
+        <a class="btn btn-success"  href="{% url 'nueva_campo' %}">Agregar campo</a>
+  
+
+    </form>
+</body>
+</html>
+{% endblock contenido %}

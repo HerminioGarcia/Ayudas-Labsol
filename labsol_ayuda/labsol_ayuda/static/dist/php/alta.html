@@ -1,0 +1,15 @@
+<?php 
+include( 'php/conexion.php' );
+if( isset( $_POST['nombres'] ) ){
+    foreach( $_POST['nombres'] as $indice => $nombre ){
+        $campo = $_POST['campos'][$indice];
+        $consulta_sql = "INSERT INTO usuarios SET nombre='$nombre', campo='$campo'";
+
+        mysqli_query( $cnx, $consulta_sql );        
+    }
+}
+header("Location: listaFormulario.html" ); ?>
+
+
+
+

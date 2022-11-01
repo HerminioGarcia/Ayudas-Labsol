@@ -1,4 +1,5 @@
 from django.db import models
+from Formulario.models import Formularios
 
 APOYO = [
     ('1', 'Apoyo1'),
@@ -7,10 +8,12 @@ APOYO = [
 ]
 
 class Convocatoria(models.Model):
-    nombre = models.CharField(max_length=100)
-    decripcion = models.TextField('Descripción', null=True, blank=True)
-    apoyo = models.CharField('Apoyo', max_length=1, choices=APOYO)
-    presupuesto = models.ForeignKey("convocatoria.Presupuesto", verbose_name="Presupuesto", on_delete=models.DO_NOTHING)
+    nombre = models.CharField(max_length=100,unique=True)  
+    fecha_inicio = models.DateField(null=False)
+    hora_inicio = models.TimeField(null=False)
+    fecha_cierre = models.DateField(null=False)
+    hora_cierre = models.TimeField(null=False)
+    formularios = models.OneToOneField(Formularios, verbose_name="Formularios",default=1, on_delete=models.CASCADE)
     def __str__(self):
         return self.nombre
     
