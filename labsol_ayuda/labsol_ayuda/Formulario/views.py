@@ -6,8 +6,6 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView
 from django.http import HttpResponseRedirect
 
-x = 0 
-
 def formulario(request, id):
     quiz = Formularios.objects.get(id=id)
     form = AplicaFormulario(campos=quiz.campos.all())    
@@ -75,13 +73,6 @@ def eliminar_campo(request, id):
     Campo.objects.get(id=id).delete()
     return redirect('modalidades_lista')
 
-class EditarCampoView(UpdateView):
-    model = Campo
-    form_class = FormCampos
-    extra_context = {'accion':'Modificar'}
-    success_url = reverse_lazy('modalidades_lista')
-    success_message = "Campo editado"
-
 #esto es nuevo
 
 def editar_campo(request, id):
@@ -95,13 +86,10 @@ def editar_campo(request, id):
         form = FormCampos2(instance=campo)
     return render(request, 'campo_form.html', {'form':form})
 
-def nuevo_campo(request):
-    if request.method == 'POST':
-        form = FormCampos2(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('modalidades_lista')
-    else:
-        form = FormCampos2()
-    return render(request, 'campo_form.html', {'form':form})
+
+class ModalidadesCamposLista(ListView):
+    model = Campo
+    success_url = reverse_lazy('modalidades_lista')
+    def get_queryset(self):
+        return  Campo.objects.filter(formularios=self.request.resolver_match.kwargs['pk' ])
 

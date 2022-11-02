@@ -13,18 +13,13 @@ urlpatterns = [
 
     path('formulario/<int:id>', views.formulario, name='formulario'),
     
-    path('campoNuevo', views.NuevoCampoView.as_view(), name='nueva_campo'),
+    path('campoNuevo', views.NuevoCampoView.as_view(), name='nueva_campo2'),
 
     path('campos/<int:pk>', views.ModalidadesCamposLista.as_view(), name='campos_Lista'),
 
     path('eliminar_Campo/<int:id>', views.eliminar_campo, name='eliminar_campo'),
-
-    path('campoEditar/<int:pk>', views.EditarCampoView.as_view(), name='editarCampo'),
     
     #esto es de prueba
 
     path('editar/campo/<int:id>', views.editar_campo, name='editar_campo'),
-
-    path('campo/nuevo', views.nuevo_campo, name='nuevo_campo'),
-
 ]
