@@ -1,9 +1,12 @@
 from django import forms
 from django.db import models
-from .models import ContestaFormularios, Campo, Formularios
+from .models import ContestaFormularios, Campo, Formularios, OpcionesCampo
 from django.contrib.auth.decorators import login_required,permission_required
 
 class AplicaFormulario(forms.Form):
+    # class Meta:
+    #     model = ContestaCuestionario
+    #     fields = '__all__'
         
     def __init__(self, *args, **kwargs):
         campos = kwargs.pop('campos')
@@ -11,7 +14,7 @@ class AplicaFormulario(forms.Form):
         super(AplicaFormulario, self).__init__(*args, **kwargs)
         
         TIPO_DATO = {
-            '1': forms.CharField(max_length=300),
+            '1': forms.CharField(max_length=100),
             '2': forms.IntegerField(),
             '3': forms.DecimalField(),
             '4': forms.DateField(widget=forms.DateInput(attrs={'type':'date'})),
@@ -77,3 +80,8 @@ class FormFiltroCampo(forms.Form):
         widget=forms.TextInput(attrs={'class':'form-control','placeholder':'formularios'}),
         required=False
     )   
+
+class FormOpcionesCampo(forms.ModelForm):
+    class Meta:
+        model = OpcionesCampo
+        fields = '__all__'

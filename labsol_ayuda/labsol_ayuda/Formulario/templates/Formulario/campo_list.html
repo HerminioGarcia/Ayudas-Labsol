@@ -27,6 +27,7 @@
             </tr>
         </thead>
         <tbody>
+            <a class="btn btn-success"  href="{% url 'opcion_campo_Nuevo' %}">Agregar opcion de campo</a>
             {% for campos in object_list  %}
                 <tr>
                     <td>{{campos.campo}}</td>

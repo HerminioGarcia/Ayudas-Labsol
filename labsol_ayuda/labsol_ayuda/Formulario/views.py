@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Formularios, ContestaFormularios, DetalleContestaFormularios, Campo, Formularios
-from .forms import AplicaFormulario, FormCampos2, FormCampos, FormFormularios, FormFiltroCampo
+from .models import Formularios, ContestaFormularios, DetalleContestaFormularios, Campo, Formularios, OpcionesCampo
+from .forms import AplicaFormulario, FormCampos2, FormCampos, FormFormularios, FormFiltroCampo, FormOpcionesCampo
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView
@@ -12,7 +12,7 @@ def formulario(request, id):
     form = AplicaFormulario(campos=quiz.campos.all())    
     
     if request.method == 'POST':
-        form = AplicaFormulario(request.POST, request.FILES, campos=quiz.campos.all()) 
+        form = AplicaFormulario(request.POST, campos=quiz.campos.all()) 
         if form.is_valid():
             data = form.cleaned_data
             
@@ -24,7 +24,7 @@ def formulario(request, id):
             for campo in quiz.campos.all():
                 DetalleContestaFormularios.objects.create(
                     campo = campo,
-                    respuesta = data[f"{campo.campo}"],
+                    respuesta = data[f"campo-{campo.id}"],
                     contesta_formularios = contesta_formulario
                 )
         
@@ -95,4 +95,10 @@ class ModalidadesCamposLista(ListView):
     success_url = reverse_lazy('modalidades_lista')
     def get_queryset(self):
         return  Campo.objects.filter(formularios=self.request.resolver_match.kwargs['pk' ])
+
+class OpcionCampoNuevoView(CreateView):
+    model = OpcionesCampo
+    form_class = FormOpcionesCampo
+    success_url = reverse_lazy('modalidades_lista')
+    extra_context = {'accion':'Nueva'}
 

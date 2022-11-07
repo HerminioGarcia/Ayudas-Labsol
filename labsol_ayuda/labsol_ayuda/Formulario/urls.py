@@ -23,4 +23,6 @@ urlpatterns = [
     #esto es de prueba
 
     path('editar/campo/<int:id>', views.editar_campo, name='editar_campo'),
+
+    path('opcion_campo/Nuevo', login_required(views.OpcionCampoNuevoView.as_view()), name='opcion_campo_Nuevo'),
 ]

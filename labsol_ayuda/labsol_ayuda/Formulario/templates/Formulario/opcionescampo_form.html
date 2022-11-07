@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block titulo %}
+    Nueva opcion de campo
+{% endblock titulo %}
+
+{% block contenido %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger">
+                     {{message}}
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    {{message}}
+                </div>
+            {% endif %}        
+        {% endfor %}
+    {% endif %}
+    <h1>Agregar opcion de campo</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input class="btn btn-success" type="submit" value="Agregar">
+        
+        <a class="btn btn-danger" href="{% url 'modalidades_lista' %}">Regresar</a>
+
+    </form>
+{% endblock contenido %}
+
+{% block scripts %}
+    {% comment %} <script src="{% static 'dist/js/pages/dashboard3.js' %}"></script> {% endcomment %}
+{% endblock scripts %}
