@@ -3,10 +3,23 @@
 
 
 {% block titulo %}
-    Nueva convocatoria
+    Nueva Convocatoria
 {% endblock titulo %}
 
 {% block contenido %}
+{% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger">
+                    {{message}}
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    {{message}}
+                </div>
+            {% endif %}        
+        {% endfor %}
+    {% endif %}
     <h1>Agregar una nueva convocatoria</h1>
     <form method="post">
         {% csrf_token %}

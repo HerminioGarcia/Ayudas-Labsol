@@ -6,7 +6,7 @@ from convocatoria.models import Convocatoria, Presupuesto
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.contrib.auth.decorators import login_required,permission_required
 
 
 class ListaPresupuesto(ListView):

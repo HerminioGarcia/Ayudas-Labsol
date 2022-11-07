@@ -4,7 +4,7 @@
 
 
 {% block titulo %}
-    Campos
+    Registro de campos
 {% endblock titulo %}
 
 {% block contenido %}
@@ -34,11 +34,8 @@
 
         {{form.as_p}}
             
-        
+        <a class="btn btn-danger" href="{% url 'modalidades_lista' %}">Regresar</a>
         <input type="submit" value="Guardar">
-        <a class="btn btn-success"  href="{% url 'nueva_campo' %}">Agregar campo</a>
-  
-
     </form>
 </body>
 </html>

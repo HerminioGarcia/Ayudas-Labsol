@@ -25,6 +25,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 #@login_required
 
+@login_required
 def eliminar_usuario(request, id):
     User = get_user_model()
     User.objects.get(id=id).delete()
@@ -59,6 +60,7 @@ class ListaUsuariosView(LoginRequiredMixin,ListView):
         context['grupos'] = Group.objects.all()
         return context
 
+@login_required
 def AsignarGruposUsuario(request):
     id_usuario = request.POST.get('usuario', None)
     User = get_user_model()
@@ -158,10 +160,19 @@ class EditarPerfilView(LoginRequiredMixin,UpdateView):
 class BienvenidaView(TemplateView):
     template_name = 'bienvenida.html'
 
+@login_required
 def busca_municipios(request):
     id_estado = request.POST.get('id_estado', None)
     if id_estado:
         municipios = Municipio.objects.filter(estado_id=id_estado)
         data = [{'id':mun.id,'nombre':mun.nombre} for mun in municipios]
         return JsonResponse(data, safe=False)
-    return JsonResponse({'error':'Parámetro inválido'}, safe=False)  
+    return JsonResponse({'error':'Parámetro inválido'}, safe=False)
+
+#para el menu de administrador
+#va en base.html solo que no lo puedo comentar
+#{% for grupo in request.user.groups.all %} 
+#               {% if 'Administrador' in grupo.name %}
+#                  {% include 'menu_administrador.html' %}
+#               {% endif %}
+#             {% endfor %}

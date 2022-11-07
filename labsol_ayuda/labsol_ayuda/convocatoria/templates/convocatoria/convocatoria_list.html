@@ -6,21 +6,32 @@
 
 {% block contenido %}
 <p align="right">
-    <a class="fas fa-plus" href="{% url 'nueva_convocatoria'  %}" ></a>
+    {% for grupo in request.user.groups.all %} 
+        {% if 'Administrador' in grupo.name %}
+            <a class="fas fa-plus" href="{% url 'nueva_convocatoria'  %}" ></a>
+        {% endif %}
+    {% endfor %}
     <h1>Convocatorias</h1>
-                    <a class="nav-link" data-toggle="dropdown" href="#">                   
-                    <p align="right">
-                        <i class="fas fas fa-cog"></i>
-                        </p>
-                      </a>               
-                      <div class="dropdown-menu dropdown-menu-md-left">
-                        <h3 class="dropdown-item-title">
-                          <a href="{% url 'perfil' %}" class="d-block">nombre</a>
-                        </h3>
-                        <h3 class="dropdown-item-title">
-                          <a class="d-block">fecha</a>
-                        </h3>
-                      </div> 
+                    {% for grupo in request.user.groups.all %} 
+                        {% if 'Administrador' in grupo.name %}
+                            <td>
+                                <a class="nav-link" data-toggle="dropdown" href="#">                   
+                                    <p align="right">
+                                        <i class="fas fas fa-cog"></i>
+                                        </p>
+                                      </a>               
+                                      <div class="dropdown-menu dropdown-menu-md-left">
+                                        <h3 class="dropdown-item-title">
+                                          <a href="{% url 'perfil' %}" class="d-block">nombre</a>
+                                        </h3>
+                                        <h3 class="dropdown-item-title">
+                                          <a class="d-block">fecha</a>
+                                        </h3>
+                                      </div> 
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                    
                     
     <table class="table">
         <thead>
@@ -34,8 +45,13 @@
                 <th>Fecha Cierre</th>
                 
                 <th>Hora Cierre</th>
-
-                <th>Opciones</th>
+                {% for grupo in request.user.groups.all %} 
+                    {% if 'Administrador' in grupo.name %}
+                        <td>
+                            <th>Opciones</th>
+                        </td>
+                    {% endif %}
+                {% endfor %}
             </tr>
         </thead>
         <tbody>
@@ -46,11 +62,15 @@
                     <td>{{convocatoria.hora_inicio}}</td>
                     <td>{{convocatoria.fecha_cierre}}</td>
                     <td>{{convocatoria.hora_cierre}}</td>
-                    <td>
+                    {% for grupo in request.user.groups.all %} 
+                        {% if 'Administrador' in grupo.name %}
+                        <td>
                         
-                        <a class="btn btn-outline-primary btn-sm" href="{% url 'editar_convocatoria' convocatoria.id %}">Editar</a>
-                        <a class="btn btn-outline-warning btn-sm" href="{% url 'eliminar_convocatoria' convocatoria.id %}">Eliminar</a>
-                    </td>
+                            <a class="btn btn-outline-primary btn-sm" href="{% url 'editar_convocatoria' convocatoria.id %}">Editar</a>
+                            <a class="btn btn-outline-warning btn-sm" href="{% url 'eliminar_convocatoria' convocatoria.id %}">Eliminar</a>
+                        </td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             {% empty %}
                 <tr>

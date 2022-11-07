@@ -10,19 +10,19 @@ from convocatoria.forms import FormConvocatoria
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ValidationError
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.contrib.auth.decorators import login_required,permission_required
 
 
 class ListaConvocatoria(ListView):
     model = Convocatoria
 
-
+@login_required
 def eliminar_convocatoria(request, id):
     conv = get_object_or_404(Convocatoria, id=id)
     conv.delete()
     return redirect('convocatoria_lista')
 
-
+@login_required
 def nuevo_convocatoria(request):
     if request.method == 'POST':
         form = FormConvocatoria(request.POST)   
@@ -39,7 +39,7 @@ def nuevo_convocatoria(request):
         form = FormConvocatoria()
     return render(request, 'nueva_convocatoria.html', {'form':form})
 
-
+@login_required
 def editar_convocatoria(request, id):
     convocatoria = Convocatoria.objects.get(id=id)
     if request.method == 'POST':

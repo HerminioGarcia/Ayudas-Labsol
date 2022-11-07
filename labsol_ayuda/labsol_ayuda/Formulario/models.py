@@ -45,12 +45,11 @@ TIPO_DATO=[
 
 class Campo(models.Model):
     campo = models.CharField(max_length=150)
-    descripcion = models.TextField("Descripción", max_length=250)
     requerida = models.CharField(choices=SI_NO, max_length=1)
     tipo_dato = models.CharField("Tipo de respuesta", max_length=2, choices=TIPO_DATO)
     size_texto = models.SmallIntegerField("Máximo de palabras apróximadamente", null=True, 
     blank=True, choices=SIZE_TEXTO)
-    formularios = models.ForeignKey("Formulario.Formularios", verbose_name="Campo", 
+    formularios = models.ForeignKey("Formulario.Formularios", verbose_name="Modalidad", 
     on_delete=models.CASCADE, related_name='campos')
     
     def __str__(self):

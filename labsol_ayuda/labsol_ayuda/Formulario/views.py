@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required,permission_required
 
 def formulario(request, id):
     quiz = Formularios.objects.get(id=id)
@@ -62,6 +63,7 @@ class EditarFormularioView(UpdateView):
     success_url = reverse_lazy('modalidades_lista')
     success_message = "Modalidad editada"
 
+@login_required
 def eliminar_formulario(request, id):
     Formularios.objects.get(id=id).delete()
     return redirect('modalidades_lista')
@@ -69,12 +71,13 @@ def eliminar_formulario(request, id):
 class ListaFormulario(ListView):
     model = Formularios
 
+@login_required
 def eliminar_campo(request, id):
     Campo.objects.get(id=id).delete()
     return redirect('modalidades_lista')
 
 #esto es nuevo
-
+@login_required
 def editar_campo(request, id):
     campo = Campo.objects.get(id=id)
     if request.method == 'POST':

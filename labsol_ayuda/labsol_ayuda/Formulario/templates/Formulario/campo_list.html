@@ -39,7 +39,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a class="btn btn-success"  href="{% url 'editar_campo' campos.id %}">Editar Campo2</a>
+                        <a class="btn btn-success"  href="{% url 'editar_campo' campos.id %}">Editar Campo</a>
                         <a class="btn btn-danger" href="{% url 'eliminar_campo' campos.id %}">Eliminar</a>
                     </td>
                     
@@ -47,7 +47,7 @@
 
             {% empty %}
                 <tr>
-                    <td colspan="3">
+                    <td colspan="4">
                         <p>No existen modalidades registradas</p>
                     </td>
                 </tr>

@@ -1,7 +1,7 @@
 from django import forms
 from django.db import models
 from .models import ContestaFormularios, Campo, Formularios
-
+from django.contrib.auth.decorators import login_required,permission_required
 
 class AplicaFormulario(forms.Form):
         
@@ -11,7 +11,7 @@ class AplicaFormulario(forms.Form):
         super(AplicaFormulario, self).__init__(*args, **kwargs)
         
         TIPO_DATO = {
-            '1': forms.CharField(max_length=100),
+            '1': forms.CharField(max_length=300),
             '2': forms.IntegerField(),
             '3': forms.DecimalField(),
             '4': forms.DateField(widget=forms.DateInput(attrs={'type':'date'})),
@@ -19,7 +19,7 @@ class AplicaFormulario(forms.Form):
             '6': forms.EmailField(),
             '7': forms.ModelChoiceField(queryset=None),
             '8': forms.ModelChoiceField(queryset=None, widget=forms.RadioSelect()),
-            '9': forms.FileField( label='Select a file', help_text='max. 100 megabytes')
+            '9': forms.FileField( )
         }
         for campo in campos:
             self.fields[f"{str(campo.campo)}"] = TIPO_DATO[campo.tipo_dato]
@@ -29,7 +29,7 @@ class AplicaFormulario(forms.Form):
                 self.fields[f"{str(campo.campo)}"].required = False
             if campo.tipo_dato == '1':
                 print (campo.size_texto)
-                self.fields[f"{str(campo.campo)}"].max_length = 150
+                self.fields[f"{str(campo.campo)}"].max_length = campo.size_texto
                 
         # interests = ProfileInterest.objects.filter(
         #     profile=self.instance

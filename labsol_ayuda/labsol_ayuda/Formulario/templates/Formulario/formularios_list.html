@@ -6,32 +6,43 @@
 
 {% block contenido %}
     <h1>Lista de Modalidades</h1>
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <div class="alert alert-danger">
-                    {{message}}
-                </div>
-            {% else %}
-                <div class="alert alert-success">
-                    {{message}}
-                </div>
-            {% endif %}        
-        {% endfor %}
-    {% endif %}
-    <a class="btn btn-success" href="{% url 'nuevoFormulario' %}">Agregar modalidad</a>
-    <a class="btn btn-success" href="{% url 'nueva_campo2' %}">Agregar Campo</a>
+    
+    {% for grupo in request.user.groups.all %} 
+        {% if 'Administrador' in grupo.name %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <div class="alert alert-danger">
+                            {{message}}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            {{message}}
+                        </div>
+                    {% endif %}        
+                {% endfor %}
+            {% endif %}
+            <a class="btn btn-success" href="{% url 'nuevoFormulario' %}">Agregar modalidad</a>
+            <a class="btn btn-success" href="{% url 'nueva_campo2' %}">Agregar Campo</a>
+        {% endif %}
+    {% endfor %}
+
     <table class="table">
         <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Descripción</th>
+                {% for grupo in request.user.groups.all %} 
+                    {% if 'Administrador' in grupo.name %}
+                        <th>Opciones</th>
+                    {% endif %}
+                {% endfor %}
             </tr>
         </thead>
         <tbody>
             {% for formulario in object_list  %}
                 <tr>
-                    <td>{{formulario.nombre}}</td>
+                    <td ><a class="d-block" href="{% url 'formulario' formulario.id %}">{{formulario.nombre}}</a></td>
                     <td>
                         {% if formulario.descripcion %}
                             {{formulario.descripcion}}    
@@ -39,11 +50,15 @@
                             No cuenta con descripción
                         {% endif %}
                     </td>
-                    <td>
-                        <a class="btn btn-success"  href="{% url 'campos_Lista' formulario.id %}">Ver campos</a>
-                        <a class="btn btn-success"  href="{% url 'editarFormulario' formulario.id %}">Editar Modalidad</a>
-                        <a class="btn btn-danger" href="{% url 'eliminar_Formulario' formulario.id %}">Eliminar</a>
-                    </td>
+                    {% for grupo in request.user.groups.all %} 
+                        {% if 'Administrador' in grupo.name %}
+                        <td>
+                            <a class="btn btn-success"  href="{% url 'campos_Lista' formulario.id %}">Ver campos</a>
+                            <a class="btn btn-success"  href="{% url 'editarFormulario' formulario.id %}">Editar Modalidad</a>
+                            <a class="btn btn-danger" href="{% url 'eliminar_Formulario' formulario.id %}">Eliminar</a>
+                        </td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             {% empty %}
                 <tr>
